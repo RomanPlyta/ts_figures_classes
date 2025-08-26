@@ -70,7 +70,7 @@ export class Circle implements Figure {
 
   constructor(color: 'red' | 'green' | 'blue', radius: number) {
     if (radius <= 0) {
-      throw new Error('Radius must be greater than 0');
+      throw new Error(`Radius must be > 0 (received: ${radius})`);
     }
     this.color = color;
     this.radius = radius;
