@@ -21,15 +21,28 @@ export class Triangle implements Figure {
     b: number,
     c: number,
   ) {
-    if (a <= 0 || b <= 0 || c <= 0) {
-      throw new Error('All sides must be greater than 0');
+    if (a <= 0) {
+      throw new Error(`Side 'a' must be > 0 (received: ${a})`);
+    }
+
+    // Проверка стороны b
+    if (b <= 0) {
+      throw new Error(`Side 'b' must be > 0 (received: ${b})`);
+    }
+
+    // Проверка стороны c
+    if (c <= 0) {
+      throw new Error(`Side 'c' must be > 0 (received: ${c})`);
     }
 
     const sides = [a, b, c].sort((x, y) => x - y);
 
-    if (sides[2] >= sides[0] + sides[1]) {
+    const max = Math.max(...sides);
+    const sumOther = sides.reduce((acc, side) => acc + side, 0) - max;
+
+    if (max >= sumOther) {
       throw new Error(
-        'The longest side must be less than the sum of the other two sides',
+        `Triangle inequality violated: max side ${max} >= sum of other sides ${sumOther}`,
       );
     }
 
@@ -44,7 +57,7 @@ export class Triangle implements Figure {
     const s = (this.a + this.b + this.c) / 2;
     const area = Math.sqrt(s * (s - this.a) * (s - this.b) * (s - this.c));
 
-    return Math.round(area * 100) / 100;
+    return Math.floor(area * 100) / 100;
   }
 }
 
@@ -66,7 +79,7 @@ export class Circle implements Figure {
   getArea(): number {
     const area = Math.PI * this.radius * this.radius;
 
-    return parseFloat(area.toFixed(2));
+    return Math.floor(area * 100) / 100;
   }
 }
 
@@ -80,8 +93,14 @@ export class Rectangle implements Figure {
   private height: number;
 
   constructor(color: 'red' | 'green' | 'blue', width: number, height: number) {
-    if (width <= 0 || height <= 0) {
-      throw new Error('Width and height must be greater than 0');
+    // Проверка ширины
+    if (width <= 0) {
+      throw new Error(`Width must be > 0 (received: ${width})`);
+    }
+
+    // Проверка высоты
+    if (height <= 0) {
+      throw new Error(`Height must be > 0 (received: ${height})`);
     }
     this.color = color;
     this.width = width;
@@ -91,7 +110,7 @@ export class Rectangle implements Figure {
   getArea(): number {
     const area = this.width * this.height;
 
-    return Math.round(area * 100) / 100;
+    return Math.floor(area * 100) / 100;
   }
 }
 
